@@ -1,0 +1,38 @@
+version: "3"
+services:
+  sql-server:
+    container_name: so-shoe-store_db
+    image: "mcr.microsoft.com/mssql/server:2022-latest"
+    ports:
+      - "1434:1433"
+    environment:
+      SA_PASSWORD: tinh!123456
+      ACCEPT_EULA: "Y"
+
+  redis:
+    container_name: so-shoe-store_rs
+    image: "redis/redis-stack-server:latest"
+    ports:
+      - "6378:6379"
+
+  spring-boot:
+    container_name: so-shoe-store_server
+    image: so-shoe-store_server
+    build: .
+    ports:
+      - "8081:8080"
+    environment:
+      API_PREFIX: api/v1
+      SQL_SERVER_HOST: 192.168.224.1
+      SQL_SERVER_PORT: 1434
+      SQL_SERVER_NAME: soShoeStore
+      SQL_SERVER_USER: sa
+      REDIS_HOST: 192.168.224.1
+      REDIS_PORT: 6378
+      SQL_SERVER_PASSWORD: tinh!123456
+      CLOUDINARY_NAME: dprkvtle0
+      CLOUDINARY_API_KEY: 545227972661364
+      CLOUDINARY_API_SECRET: CF9pY6z7criTROCZtPVPHh7lwbE
+
+
+
