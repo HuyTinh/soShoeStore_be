@@ -3,14 +3,9 @@ package com.personal.soshoestore_be.model;
 import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.redis.core.RedisHash;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -25,9 +20,9 @@ public class Shoe extends BaseModel implements Serializable  {
     @Column(name = "shoe_id")
     @JsonProperty("id")
     private Long id;
-    @Column(name = "name", columnDefinition = "NVARCHAR(255)")
+    @Column(name = "name", columnDefinition = "VARCHAR(255)")
     private String name;
-    @Column(name = "description", columnDefinition = "NVARCHAR(2000)")
+    @Column(name = "description", columnDefinition = "VARCHAR(2000)")
     private String description;
     @Column(name = "price")
     private double price;

@@ -23,9 +23,9 @@ public class OrderResponse{
     Long id;
     @JsonProperty("user_id")
     Long userId;
-    @JsonProperty("firstname")
+    @JsonProperty("first_name")
     String firstName;
-    @JsonProperty("lastname")
+    @JsonProperty("last_name")
     String lastName;
     @JsonProperty("phone_number")
     String phoneNumber;

@@ -27,12 +27,19 @@ services:
       SQL_SERVER_PORT: 1434
       SQL_SERVER_NAME: soShoeStore
       SQL_SERVER_USER: sa
-      REDIS_HOST: 192.168.224.1
-      REDIS_PORT: 6378
+      REDIS_HOST: monorail.proxy.rlwy.net
+      REDIS_PORT: 43818
+      REDIS_USER: default
+      REDIS_PASSWORD: ZzNjmlbdKxtFPVBVzVbBgydcuIzrxArB
       SQL_SERVER_PASSWORD: tinh!123456
       CLOUDINARY_NAME: dprkvtle0
       CLOUDINARY_API_KEY: 545227972661364
       CLOUDINARY_API_SECRET: CF9pY6z7criTROCZtPVPHh7lwbE
+      POSTGRESQL_HOST: viaduct.proxy.rlwy.net
+      POSTGRESQL_PORT: 51955
+      POSTGRESQL_USER: postgres
+      POSTGRESQL_PASSWORD: uXTTfNKvYxyJVTNYAsdlqnGSwAIfATkJ
+      POSTGRESQL_DATABASE: soshoestore
 
 
 

@@ -22,10 +22,10 @@ public class User extends BaseModel implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Column(name = "first_name", columnDefinition = "NVARCHAR(100)")
+    @Column(name = "first_name", columnDefinition = "VARCHAR(100)")
     String firstName;
 
-    @Column(name = "last_name", columnDefinition = "NVARCHAR(100)")
+    @Column(name = "last_name", columnDefinition = "VARCHAR(100)")
     String lastName;
 
     @Column(name = "email", columnDefinition = "VARCHAR(100)")
@@ -37,7 +37,7 @@ public class User extends BaseModel implements Serializable {
     @Column(name = "phone_number", columnDefinition = "VARCHAR(10)", nullable = false)
     String phoneNumber;
 
-    @Column(name = "address", columnDefinition = "NVARCHAR(200)")
+    @Column(name = "address", columnDefinition = "VARCHAR(200)")
     String address;
 
     @Column(name ="password", columnDefinition = "VARCHAR(200)")

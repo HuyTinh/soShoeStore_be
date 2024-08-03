@@ -25,6 +25,7 @@ public class OrderController {
 
     private final OrderDetailMapper orderDetailMapper;
 
+
     @PostMapping
     public ResponseEntity<?> createOrder(
             @Valid @RequestBody OrderDTO orderDto) {
@@ -37,6 +38,7 @@ public class OrderController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getOrderById(@Valid @PathVariable("id") Long id) {
+        System.out.println(orderService.getOrderById(id).getFirstName());
         try {
             return ResponseEntity.ok(orderMapper.toResponse(orderService.getOrderById(id)));
         } catch (Exception e){

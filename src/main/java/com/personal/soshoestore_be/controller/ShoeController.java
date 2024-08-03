@@ -85,7 +85,7 @@ public class ShoeController {
     private Pageable getPageable(int page, int size, String sortBy) {
         Pageable pageable;
         if(!sortBy.isEmpty()){
-            Sort sort = Sort.by(Sort.Direction.DESC);
+            Sort sort = null;
             if(sortBy.contains("price")){
                 if(sortBy.endsWith("high")){
                     sort = Sort.by(Sort.Direction.ASC, "price");
