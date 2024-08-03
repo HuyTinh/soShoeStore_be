@@ -75,27 +75,15 @@ public interface ShoeRepository extends JpaRepository<Shoe, Long> {
             ) as 'date_sales' from DayList""", nativeQuery = true)
     List<MonthSales> findShoeMonthSales(int year, int month, int shoeId);
 
-    @Query(value = "SELECT * FROM shoes WHERE shoe_id IN (SELECT TOP 10 shoe_id FROM order_details GROUP BY shoe_id ORDER BY SUM(total_money) DESC)\n", nativeQuery = true)
+    @Query(value = "SELECT * FROM shoes WHERE shoe_id IN (SELECT shoe_id FROM order_details GROUP BY shoe_id ORDER BY SUM(total_money) DESC\n LIMIT 10)\n", nativeQuery = true)
     List<Shoe> getCurrentShoesMustHave();
 
     @Query(value = """
-            CREATE TEMPORARY TABLE tmp_shoe_categories (
-                          title varchar(30) NOT NULL
-                      )
-          
-                      INSERT INTO tmp_shoe_categories (title)
-                      SELECT DISTINCT SUBSTRING(name, 0, (PATINDEX('% %', name))) FROM shoes;
-          
-                      SELECT title, (SELECT image_url FROM shoes WHERE name LIKE CONCAT(title, '%')
+            SELECT title, (SELECT image_url FROM shoes WHERE name LIKE CONCAT(title, '%')
             LIMIT 1) FROM tmp_shoe_categories""", nativeQuery = true)
     List<Object[]> getShoesCategories();
 
     @Query(value = """
-        CREATE TEMPORARY TABLE tmp_shoe_categories (
-            title varchar(30) NOT NULL
-        )
-        INSERT INTO tmp_shoe_categories (title)
-        SELECT DISTINCT SUBSTRING(name, 0, (PATINDEX('% %', name))) FROM shoes;
         SELECT title, (SELECT SUM(total_money)FROM order_details od LEFT JOIN shoes s ON s.shoe_id = od.shoe_id WHERE name LIKE CONCAT(title, '%') AND od.order_id in (SELECT order_id FROM orders WHERE EXTRACT(YEAR FROM order_date) = EXTRACT(YEAR FROM NOW()))) as sales FROM tmp_shoe_categories""", nativeQuery = true)
     List<ShoeCategoryYearSales> getShoeCategoryYearSales();
 
