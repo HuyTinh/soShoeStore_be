@@ -35,7 +35,7 @@ public class ShoeController {
             @RequestParam(value = "sortBy", defaultValue = "") String sortBy,
             @RequestParam(value = "search", defaultValue = "") String search)
     {
-       return ResponseEntity.ok(shoeMapper.toListResponse(shoeService.getAllShoes(search, getPageable(page, size, sortBy))
+       return ResponseEntity.ok(shoeMapper.toListResponse(shoeService.getAllShoe(search, getPageable(page, size, sortBy))
                 .map(shoeMapper::toResponse).map(shoeResponse -> {
                     shoeResponse.setShoeDifferentColour(shoeService.getShoeByName(shoeResponse.getName()).stream().map(shoeMapper::toShoeDifferentColourResponse).toList());
                     return shoeResponse;

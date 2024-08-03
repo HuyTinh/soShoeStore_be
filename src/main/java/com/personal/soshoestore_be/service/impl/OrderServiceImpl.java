@@ -4,6 +4,7 @@ import com.personal.soshoestore_be.dto.OrderDTO;
 import com.personal.soshoestore_be.exception.DataNotFoundException;
 import com.personal.soshoestore_be.mapper.OrderMapper;
 import com.personal.soshoestore_be.model.Order;
+import com.personal.soshoestore_be.model.Shoe;
 import com.personal.soshoestore_be.model.User;
 import com.personal.soshoestore_be.repository.OrderRepository;
 import com.personal.soshoestore_be.repository.UserRepository;
@@ -43,6 +44,11 @@ public class OrderServiceImpl implements OrderService {
         newOrder.setUser(orderValidation.getUser());
         newOrder.setShippingDate(orderValidation.getShippingDate());
         return orderRepository.save(newOrder);
+    }
+
+    @Override
+    public Page<Order> getAllOrder(Pageable pageable) {
+        return orderRepository.findAll(pageable);
     }
 
     @Override

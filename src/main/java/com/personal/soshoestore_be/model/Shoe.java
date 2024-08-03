@@ -20,9 +20,9 @@ public class Shoe extends BaseModel implements Serializable  {
     @Column(name = "shoe_id")
     @JsonProperty("id")
     private Long id;
-    @Column(name = "name", columnDefinition = "VARCHAR(255)")
+    @Column(name = "name", columnDefinition = "NVARCHAR(255)")
     private String name;
-    @Column(name = "description", columnDefinition = "VARCHAR(2000)")
+    @Column(name = "description", columnDefinition = "NVARCHAR(2000)")
     private String description;
     @Column(name = "price")
     private double price;

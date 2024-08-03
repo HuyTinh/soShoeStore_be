@@ -23,7 +23,7 @@ public interface ShoeService{
 
     List<Shoe> getShoeByName(String name);
 
-    Page<Shoe> getAllShoes(String name, Pageable pageable);
+    Page<Shoe> getAllShoe(String name, Pageable pageable);
 
     List<YearSales> getShoeYearSales(int year, int shoeId);
 

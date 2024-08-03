@@ -27,10 +27,10 @@ public class Order implements Serializable {
     @Column(name = "order_id")
     Long id;
 
-    @Column(name = "first_name", columnDefinition = "VARCHAR(100)")
+    @Column(name = "first_name", columnDefinition = "NVARCHAR(100)")
     String firstName;
 
-    @Column(name = "last_name", columnDefinition = "VARCHAR(100)")
+    @Column(name = "last_name", columnDefinition = "NVARCHAR(100)")
     String lastName;
 
     @Column(name = "email", columnDefinition = "VARCHAR(100)", nullable = false)
@@ -39,10 +39,10 @@ public class Order implements Serializable {
     @Column(name = "phone_number", columnDefinition = "VARCHAR(20)", nullable = false)
     String phoneNumber;
 
-    @Column(name = "address", columnDefinition = "VARCHAR(200)", nullable = false)
+    @Column(name = "address", columnDefinition = "NVARCHAR(200)", nullable = false)
     String address;
 
-    @Column(name = "note", columnDefinition = "VARCHAR(100)")
+    @Column(name = "note", columnDefinition = "NVARCHAR(100)")
     String note;
 
     @Column(name = "order_date")
@@ -58,7 +58,7 @@ public class Order implements Serializable {
     @Column(name = "shipping_method", columnDefinition = "VARCHAR(100)")
     String shippingMethod;
 
-    @Column(name = "shipping_address", columnDefinition = "VARCHAR(200)")
+    @Column(name = "shipping_address", columnDefinition = "NVARCHAR(200)")
     String shippingAddress;
 
     @Column(name = "shipping_date")

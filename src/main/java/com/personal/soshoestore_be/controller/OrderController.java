@@ -25,6 +25,13 @@ public class OrderController {
 
     private final OrderDetailMapper orderDetailMapper;
 
+    @GetMapping
+    public ResponseEntity<?> getOrders() {
+            return ResponseEntity.ok(orderMapper.toListResponse(orderService.getAllOrder(getPageable(1, 20)).map(orderMapper::toResponse).map(orderResponse -> {
+                orderResponse.setOrderDetails(orderDetailService.getOrderDetailsByOrderId(orderResponse.getId()).stream().map(orderDetailMapper::toSubOrderResponse).toList());
+                return orderResponse;
+            })));
+    }
 
     @PostMapping
     public ResponseEntity<?> createOrder(
@@ -38,7 +45,6 @@ public class OrderController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getOrderById(@Valid @PathVariable("id") Long id) {
-        System.out.println(orderService.getOrderById(id).getFirstName());
         try {
             return ResponseEntity.ok(orderMapper.toResponse(orderService.getOrderById(id)));
         } catch (Exception e){
@@ -82,6 +88,7 @@ public class OrderController {
     private Pageable getPageable(int page, int size){
         return PageRequest.of(page, size);
     }
+
 }
 
 

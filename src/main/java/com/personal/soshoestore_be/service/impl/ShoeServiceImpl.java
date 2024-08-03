@@ -126,7 +126,7 @@ public class ShoeServiceImpl implements ShoeService {
     }
 
     @Override
-    public Page<Shoe> getAllShoes(String name, Pageable pageable) {
+    public Page<Shoe> getAllShoe(String name, Pageable pageable) {
         Page<Shoe> shoePage = shoeRepository.findByName(name, pageable);
         log.info("Fetching shoes by name with pagination page {} size {} from database in shoes table.", pageable.getPageNumber(), pageable.getPageSize());
         return shoePage;
@@ -168,7 +168,6 @@ public class ShoeServiceImpl implements ShoeService {
         throw new RuntimeException(e);
     }
 }
-
 
     public List<String> imagesUpload(List<MultipartFile> files) throws IOException {
         for (MultipartFile file : Objects.requireNonNullElse(files, new ArrayList<MultipartFile>())) {
