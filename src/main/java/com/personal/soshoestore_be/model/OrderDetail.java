@@ -44,4 +44,8 @@ public class OrderDetail {
     @ManyToOne
     @JoinColumn(name = "colour_id")
     ShoeColour colour;
+
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    Order order;
 }

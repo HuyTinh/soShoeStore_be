@@ -1,6 +1,6 @@
 package com.personal.soshoestore_be.controller;
 
-import com.personal.soshoestore_be.dto.CartDTO;
+import com.personal.soshoestore_be.model.Cart;
 import com.personal.soshoestore_be.dto.CartDetailDTO;
 import com.personal.soshoestore_be.service.CartService;
 import org.springframework.http.ResponseEntity;
@@ -17,24 +17,24 @@ public class CartController {
     }
 
     @GetMapping("/{cartId}")
-    public ResponseEntity<CartDTO> getCart(@PathVariable("cartId") int cartId) throws Exception {
+    public ResponseEntity<Cart> getCart(@PathVariable("cartId") int cartId) throws Exception {
         return ResponseEntity.ok(cartService.getCart(cartId));
     }
 
     @PostMapping("/{cartId}")
-    public ResponseEntity<CartDTO> addToCart(
+    public ResponseEntity<Cart> addToCart(
             @PathVariable("cartId") int cartId,
             @RequestBody CartDetailDTO cartDetailDto) throws Exception {
         return ResponseEntity.ok(cartService.addToCart(cartId, cartDetailDto));
     }
 
     @DeleteMapping("/clear/{cartId}")
-    public ResponseEntity<CartDTO> clearCart(@PathVariable("cartId") long cartId) throws Exception {
+    public ResponseEntity<Cart> clearCart(@PathVariable("cartId") long cartId) throws Exception {
         return ResponseEntity.ok(cartService.clearCart(cartId));
     }
 
     @PutMapping("/{cartId}")
-    public ResponseEntity<CartDTO> updateFromCart(
+    public ResponseEntity<Cart> updateFromCart(
             @PathVariable("cartId") int cartId,
             @RequestBody CartDetailDTO cartDetailDto) throws Exception {
         if(cartDetailDto.getQuantity() == 0){

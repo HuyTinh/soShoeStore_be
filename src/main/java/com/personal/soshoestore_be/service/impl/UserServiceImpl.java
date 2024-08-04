@@ -20,6 +20,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -40,6 +41,7 @@ public class UserServiceImpl implements UserService {
     private final AuthenticationManager authenticationManager;
 
     @Override
+    @Transactional
     public String createUser(UserRegisterDTO userRegisterDto){
         String email = userRegisterDto.getEmail();
         if(userRepository.existsByEmail(email)){
@@ -87,6 +89,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public String updateUserProfile(Long id, UserUpdateProfileDTO userUpdateProfileDTO) {
         User existingUser = userRepository.findById(id).orElseThrow(() -> new DataNotFoundException(String.format("User with id %d not found", id)));
 
@@ -96,6 +99,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public String updateUserContact(Long id, UserUpdateContactDTO userUpdateContactDTO) {
         User existingUser = userRepository.findById(id).orElseThrow(() -> new DataNotFoundException(String.format("User with id %d not found", id)));
 
@@ -105,6 +109,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void changePassword(Long id, UserUpdatePasswordDTO userUpdatePasswordDTO) {
         User existingUser = userRepository.findById(id).orElseThrow(() -> new DataNotFoundException(String.format("User with id %d not found", id)));
 

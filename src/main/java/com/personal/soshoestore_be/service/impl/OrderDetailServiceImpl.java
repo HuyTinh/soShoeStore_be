@@ -8,6 +8,7 @@ import com.personal.soshoestore_be.repository.*;
 import com.personal.soshoestore_be.service.OrderDetailService;
 import lombok.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
@@ -34,6 +35,7 @@ public class OrderDetailServiceImpl implements OrderDetailService {
     }
 
     @Override
+    @Transactional
     public OrderDetail createOrderDetail(OrderDetailDTO orderDetailDTO)  {
         OrderDetailValidation orderDetailValidation = valid(orderDetailDTO);
 
@@ -46,6 +48,7 @@ public class OrderDetailServiceImpl implements OrderDetailService {
     }
 
     @Override
+    @Transactional
     public List<OrderDetail> createMultiOrderDetail(List<OrderDetailDTO> orderDetailDTOs)  {
         return orderDetailRepository.saveAll(orderDetailDTOs.stream().map((orderDetailDTO) -> {
 
@@ -67,6 +70,7 @@ public class OrderDetailServiceImpl implements OrderDetailService {
     }
 
     @Override
+    @Transactional
     public OrderDetail updateOrderDetail(Long orderDetailId, OrderDetailDTO orderDetailDTO)  {
         OrderDetail existingOrderDetail = orderDetailRepository.findById(orderDetailId)
                 .orElseThrow(() -> new DataNotFoundException(String.format("OrderDetail with (id = %d) is not found", orderDetailId)));
@@ -82,6 +86,7 @@ public class OrderDetailServiceImpl implements OrderDetailService {
     }
 
     @Override
+    @Transactional
     public void deleteOrderDetail(Long orderDetailId) {
         orderDetailRepository.deleteById(orderDetailId);
     }

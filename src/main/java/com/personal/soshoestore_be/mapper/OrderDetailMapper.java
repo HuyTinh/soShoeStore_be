@@ -1,20 +1,16 @@
 package com.personal.soshoestore_be.mapper;
 
+import com.personal.soshoestore_be.dto.CartDetailDTO;
 import com.personal.soshoestore_be.dto.OrderDetailDTO;
-import com.personal.soshoestore_be.model.Order;
 import com.personal.soshoestore_be.model.OrderDetail;
-import com.personal.soshoestore_be.model.Shoe;
-import com.personal.soshoestore_be.repository.OrderRepository;
-import com.personal.soshoestore_be.repository.ShoeRepository;
 import com.personal.soshoestore_be.response.OrderDetailResponse;
 import com.personal.soshoestore_be.response.SubOrderResponse;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @Mapper(unmappedTargetPolicy = org.mapstruct.ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
 public abstract class OrderDetailMapper {
+
   public abstract OrderDetail toEntity(OrderDetailDTO orderDetailDTO);
 
   public OrderDetailResponse toResponse(OrderDetail orderDetail) {
@@ -48,5 +44,15 @@ public abstract class OrderDetailMapper {
     orderDetail.setNumberOfProduct(orderDetailDTO.getNumberOfProduct());
     orderDetail.setTotalMoney(orderDetailDTO.getTotalMoney());
     return orderDetail;
+  }
+
+  public OrderDetailDTO mapToDTO(CartDetailDTO cartDetailDTO) {
+    return OrderDetailDTO.builder()
+            .shoeId(cartDetailDTO.getShoeId())
+            .sizeId(cartDetailDTO.getSize().getId())
+            .numberOfProduct(cartDetailDTO.getQuantity())
+            .price(cartDetailDTO.getPrice())
+            .totalMoney(cartDetailDTO.getPrice() * cartDetailDTO.getQuantity())
+            .build();
   }
 }

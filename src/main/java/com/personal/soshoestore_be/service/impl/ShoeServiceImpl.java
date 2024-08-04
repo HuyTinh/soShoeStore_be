@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -49,6 +50,7 @@ public class ShoeServiceImpl implements ShoeService {
     }
 
     @Override
+    @Transactional
     public Shoe createShoe(ShoeDTO shoeDTO, List<MultipartFile> imageThumbnail, List<MultipartFile> imageDetails){
         log.info("Starting to create shoe.");
         Shoe newShoe = Shoe.builder()
@@ -77,6 +79,7 @@ public class ShoeServiceImpl implements ShoeService {
     }
 
     @Override
+    @Transactional
     public Shoe updateShoe(Long id, ShoeDTO shoeDTO, List<MultipartFile> imageThumbnail, List<MultipartFile> imageDetails)  {
         Optional<Shoe> optionalShoe = shoeRepository.findById(id);
     if(optionalShoe.isPresent()){
@@ -119,6 +122,7 @@ public class ShoeServiceImpl implements ShoeService {
     }
 
     @Override
+    @Transactional
     public void deleteShoe(Long id) {
         Optional<Shoe> optionalShoe = shoeRepository.findById(id);
         optionalShoe.ifPresent(shoeRepository::delete);

@@ -1,7 +1,7 @@
 package com.personal.soshoestore_be.repository;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.personal.soshoestore_be.dto.CartDTO;
+import com.personal.soshoestore_be.model.Cart;
 import com.personal.soshoestore_be.exception.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -19,21 +19,21 @@ public class CartRepository {
 
     private final String CART_STORE = "cartStore:";
 
-    public void save(CartDTO cartDto) {
-        String key = CART_STORE + cartDto.getId();
-        redisTemplate.opsForValue().set(key, cartDto);
-        redisTemplate.expire(CART_STORE + cartDto.getId(), Duration.ofDays(7));
+    public void save(Cart cart) {
+        String key = CART_STORE + cart.getId();
+        redisTemplate.opsForValue().set(key, cart);
+        redisTemplate.expire(CART_STORE + cart.getId(), Duration.ofDays(7));
     }
 
-    public CartDTO findById(long id) throws Exception {
+    public Cart findById(long id) {
         try {
-            CartDTO cartDto = objectMapper.convertValue(redisTemplate.opsForValue().get(CART_STORE + id), CartDTO.class);
-            if (cartDto != null) {
-                return cartDto;
+            Cart cart = objectMapper.convertValue(redisTemplate.opsForValue().get(CART_STORE + id), Cart.class);
+            if (cart != null) {
+                return cart;
             }
         } catch (Exception e) {
             throw new DataNotFoundException(String.format("Cart with (id = %d) is not found", id));
         }
-        return CartDTO.builder().build();
+        return Cart.builder().build();
    }
 }

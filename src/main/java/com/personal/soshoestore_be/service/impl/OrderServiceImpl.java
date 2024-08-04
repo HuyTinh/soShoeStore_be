@@ -1,21 +1,25 @@
 package com.personal.soshoestore_be.service.impl;
 
+import com.personal.soshoestore_be.dto.CartDetailDTO;
 import com.personal.soshoestore_be.dto.OrderDTO;
+import com.personal.soshoestore_be.dto.OrderDetailDTO;
 import com.personal.soshoestore_be.exception.DataNotFoundException;
+import com.personal.soshoestore_be.mapper.OrderDetailMapper;
 import com.personal.soshoestore_be.mapper.OrderMapper;
-import com.personal.soshoestore_be.model.Order;
-import com.personal.soshoestore_be.model.Shoe;
-import com.personal.soshoestore_be.model.User;
-import com.personal.soshoestore_be.repository.OrderRepository;
-import com.personal.soshoestore_be.repository.UserRepository;
+import com.personal.soshoestore_be.model.*;
+import com.personal.soshoestore_be.repository.*;
+import com.personal.soshoestore_be.service.OrderDetailService;
 import com.personal.soshoestore_be.service.OrderService;
 import lombok.*;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -26,7 +30,15 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
 
+    private final OrderDetailService orderDetailService;
+
+    private final QueueOrderRepository queueOrderRepository;
+
+    private final CartRepository cartRepository;
+
     private final OrderMapper orderMapper;
+
+    private final OrderDetailMapper orderDetailMapper;
 
     @Getter
     @Builder
@@ -35,14 +47,43 @@ public class OrderServiceImpl implements OrderService {
         private Date shippingDate;
     }
 
-
     @Override
+    @Transactional
     public Order createOrder(OrderDTO orderDTO) {
         OrderValidation orderValidation = valid(orderDTO);
 
         Order newOrder = orderMapper.toEntity(orderDTO);
         newOrder.setUser(orderValidation.getUser());
         newOrder.setShippingDate(orderValidation.getShippingDate());
+        return orderRepository.save(newOrder);
+    }
+
+    @Override
+    public QueueOrder addToQueueOrder(OrderDTO orderDTO) {
+        QueueOrder queueOrder = queueOrderRepository.findById(orderDTO.getUserId());
+        queueOrder.setQueueOrders(orderDTO);
+
+        queueOrderRepository.save(queueOrder);
+        return queueOrder;
+    }
+
+    @Override
+    public Order commitQueueOrder(Long id) {
+        OrderDTO orderDTO = queueOrderRepository.findById(id).getQueueOrders();
+        OrderValidation orderValidation = valid(orderDTO);
+
+        Order newOrder = orderMapper.toEntity(orderDTO);
+        newOrder.setUser(orderValidation.getUser());
+        newOrder.setShippingDate(orderValidation.getShippingDate());
+
+        List<OrderDetailDTO> orderDetailDTOS = cartRepository.findById(id).getCartDetailsDto().stream().map(orderDetailMapper::mapToDTO).map(
+                orderDetailDTO -> {
+                    orderDetailDTO.setOrderId(newOrder.getId());
+                    return orderDetailDTO;
+                }
+        ).toList();
+        orderDetailService.createMultiOrderDetail(orderDetailDTOS);
+
         return orderRepository.save(newOrder);
     }
 
@@ -58,6 +99,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public Order updateOrder(Long orderId, OrderDTO orderDTO) {
         Order existingOrder = orderRepository.findById(orderId)
                 .orElseThrow(() -> new DataNotFoundException("Cannot find order with id: " + orderId));
@@ -71,6 +113,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public void deleteOrder(Long orderId) {
         Optional<Order> optionalOrder = orderRepository.findById(orderId);
         if(optionalOrder.isPresent()){
@@ -85,6 +128,8 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.findByUserId(userId, pageable);
     }
 
+
+
     private OrderValidation valid(OrderDTO orderDTO){
         User existingUser = userRepository.findById(orderDTO.getUserId())
                 .orElseThrow(() -> new DataNotFoundException("Cannot find user with id: " + orderDTO.getUserId()));
@@ -98,4 +143,6 @@ public class OrderServiceImpl implements OrderService {
                 .shippingDate(shippingDate)
                 .build();
     }
+
+
 }

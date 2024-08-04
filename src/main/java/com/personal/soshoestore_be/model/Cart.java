@@ -1,8 +1,8 @@
-package com.personal.soshoestore_be.dto;
+package com.personal.soshoestore_be.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.personal.soshoestore_be.dto.CartDetailDTO;
 import lombok.*;
-import lombok.experimental.FieldDefaults;
 import org.springframework.data.redis.core.RedisHash;
 
 import java.io.Serializable;
@@ -14,10 +14,9 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@RedisHash("cart")
-public class CartDTO implements Serializable {
+@RedisHash("carts")
+public class Cart implements Serializable {
     private Long id;
-
     @Builder.Default
     @JsonProperty("cart_details")
     private List<CartDetailDTO> cartDetailsDto = new ArrayList<>();

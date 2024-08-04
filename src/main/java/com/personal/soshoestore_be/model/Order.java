@@ -1,5 +1,6 @@
 package com.personal.soshoestore_be.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.personal.soshoestore_be.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.*;
@@ -9,7 +10,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -77,4 +80,9 @@ public class Order implements Serializable {
     @ManyToOne
     @JoinColumn(name = "user_id")
     User user;
+
+    @OneToMany(mappedBy = "order",cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @Builder.Default
+    @JsonIgnore
+    List<OrderDetail> orderDetails = new ArrayList<>();
 }

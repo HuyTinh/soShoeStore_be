@@ -17,10 +17,6 @@ public class CloudinaryService {
     
     private final Cloudinary cloudinary;
 
-//    public CloudinaryService(Cloudinary cloudinary) {
-//        this.cloudinary = cloudinary;
-//    }
-
     private String uploadToCloudinary(MultipartFile file) throws IOException {
         return cloudinary.uploader().upload(file.getBytes(), ObjectUtils.asMap(
                 "public_id", Base64.getEncoder().encodeToString(file.getBytes()).replace("/", "[").substring(0, 175),
